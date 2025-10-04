@@ -1,0 +1,60 @@
+const User=require('../models/userModel')
+const bcrypt=require('bcryptjs')
+
+// create User-(default seller)
+exports.createUser= async (req,res)=>{
+    const {name,email,phone,password,cpassword,country,state,skills}=req.body;
+
+    if(!name || !email || !phone || !password || !cpassword || !country || !state || !skills)
+    {
+        return res.status(400).json({status:400,message:'Please fill all the fields'})
+    }
+
+    try {
+        // check if user exists
+        const userData=await User.findOne({email})
+
+        if(userData)
+        {
+            return res.status(400).json({status:400,message: 'Email already exists' });
+        }
+        else if(password !==cpassword)
+        {
+             return res.status(400).json({status:400,message: 'Password do not match' });
+        }
+        else{
+            // hashing password before saving
+            const hashedPassword=bcrypt.hashSync(password,10);
+            
+            const user=new User({
+                name,
+                email,
+                phone,
+                password:hashedPassword,
+                country,
+                state,
+                skills
+            })
+
+            await user.save()
+
+            res.status(201).json({status:201,message:'User created successfully'});
+        }
+
+    } catch (error) {
+          res.status(400).json({status:400,message:'Error creating User',error});
+    }
+};
+
+
+// Get all the seller Record
+exports.getSeller= async (req,res)=>{
+    try {
+        let sellerData=await User.find({role:'seller'});
+
+        res.status(200).json({status:200,message:'Sellers record fetched successfully',sellerData});
+    }catch (error) {
+        res.status(400).json({status:400,message:'Error fetching seller records',error});
+    }
+};
+

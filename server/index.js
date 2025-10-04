@@ -4,6 +4,8 @@ const express=require('express');
 const app=express();
 const cors=require('cors');
 const cookieParser=require('cookie-parser');
+const product=require('./routes/productRoutes')
+const user=require('./routes/userRoutes')
 
 const port= process.env.PORT || 5000;
 app.use(cors());
@@ -16,7 +18,8 @@ app.use(express.urlencoded({extended:false}));
 app.use('/upload',express.static('./uploads'))
 
 // Routes
-// app.use('/user/api')
+app.use('/api/user',user)
+app.use('/api/product',product)
 
 app.listen(port,()=>{
     console.log(`server started at port ${port}`)
