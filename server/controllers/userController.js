@@ -42,7 +42,7 @@ exports.createUser= async (req,res)=>{
         }
 
     } catch (error) {
-          res.status(400).json({status:400,message:'Error creating User',error});
+          res.status(500).json({status:500,message:'Error creating user',error});
     }
 };
 
@@ -54,7 +54,44 @@ exports.getSeller= async (req,res)=>{
 
         res.status(200).json({status:200,message:'Sellers record fetched successfully',sellerData});
     }catch (error) {
-        res.status(400).json({status:400,message:'Error fetching seller records',error});
+        res.status(500).json({status:500,message:'Error fetching seller records',error});
     }
 };
 
+// user Login
+exports.userLogin=async(req,res)=>{
+    const {email,password}=req.body;
+
+    if(!email || !password)
+    {
+        return res.status(400).json({status:400,message:'Please fill all the fields'})
+    }
+
+    try{
+        const userExist=await User.findOne({email})
+
+        if(!userExist)
+        {
+            return res.status(400).json({status:400,message: 'No user found' });
+        }
+
+        // check user record 
+        const userCheck=await bcrypt.compare(password,userExist.password);
+
+        if(!userCheck)
+        {
+            return res.status(400).json({status:400,message: 'Incorrect Credentials'});
+        }
+
+        // create a token
+        let token=await userExist.generateToken();
+
+        const safeUser=userExist.toObject();
+        delete safeUser.password;
+        
+        res.status(200).json({status:200,message:'User Login successfull',user:safeUser,token});
+    }catch(error)
+    {
+        res.status(500).json({status:500,message:'Error fetching user',error});
+    }
+};

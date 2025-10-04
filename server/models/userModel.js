@@ -1,5 +1,6 @@
 const mongoose=require('mongoose')
 const validator=require('validator')
+const jwt=require('jsonwebtoken')
 
 const userSchema=new mongoose.Schema({
     name:{
@@ -42,7 +43,33 @@ const userSchema=new mongoose.Schema({
         default:'seller',
         required:true
     },
+    tokens:[
+      {
+          token:{
+            type:String,
+            required:true
+        }
+      }
+    ]
 },{timestamps:true})
+
+
+userSchema.methods.generateToken=async function()
+{
+    try {
+        const token=jwt.sign({_id:this._id},process.env.SECRET,{
+            expiresIn:'1d'
+        })
+        this.tokens=this.tokens.concat({token})
+        await this.save();
+
+        return token;
+
+    } catch (error) {
+        console.log("Error generating token",error)
+    }
+}
+
 
 const User=mongoose.model('user',userSchema);
 
