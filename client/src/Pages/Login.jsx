@@ -53,8 +53,8 @@ const Login = () => {
 
   return (
     <>
-      <div className="d-flex justify-content-center align-items-center vh-100">
-        <div className='w-100' style={{ maxWidth: '400px' }}>
+      <div className="d-flex justify-content-center py-4">
+        <div className='w-100' style={{ maxWidth: '500px' }}>
           <h1 className="text-center mb-4">Login</h1>
 
           <Form onSubmit={handleSubmit}>

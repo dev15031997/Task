@@ -52,8 +52,6 @@ const CreateSeller = () => {
           skills: skills 
         })
 
-        console.log(res,"res")
-
         if (res.data.status === 201) {
           navigate('/admin/sellers')
         }
@@ -84,8 +82,8 @@ const CreateSeller = () => {
 
   return (
     <>
-      <div className="d-flex justify-content-center align-items-center vh-100">
-        <div className='w-100' style={{ maxWidth: '400px' }}>
+      <div className="d-flex justify-content-center py-4">
+        <div className='w-100' style={{ maxWidth: '800px' }}>
           <h1 className="text-center mt-3">Create Seller</h1>
 
           <Form onSubmit={handleSubmit}>
