@@ -72,7 +72,7 @@ exports.userLogin=async(req,res)=>{
 
         if(!userExist)
         {
-            return res.status(400).json({status:400,message: 'No user found' });
+            return res.status(400).json({status:400,message: 'User not found' });
         }
 
         // check user record 
@@ -86,6 +86,7 @@ exports.userLogin=async(req,res)=>{
         // create a token
         let token=await userExist.generateToken();
 
+        // sending user Data without password
         const safeUser=userExist.toObject();
         delete safeUser.password;
         
