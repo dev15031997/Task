@@ -82,7 +82,7 @@ exports.deleteProduct= async (req,res)=>{
 // all Products
 exports.allProducts= async (req,res)=>{
     const page=req.query.page || 1;
-    const count=2;
+    const count=3;
 
     try {
         const skip=(page-1)*count;
@@ -93,7 +93,7 @@ exports.allProducts= async (req,res)=>{
         // Total page Count
         const pageCount=Math.ceil(productCount/count)
 
-        let productData=await Product.find().limit(count).skip(skip);
+        let productData=await Product.find().populate('sellerId').populate('brands').limit(count).skip(skip);
 
         res.status(200).json({status:200,message:'All product records fetched successfully',Pagination:{
             productCount,pageCount,count,page
@@ -107,7 +107,7 @@ exports.allProducts= async (req,res)=>{
 // all Seller Products
 exports.SellerProducts= async (req,res)=>{
     const page=req.query.page || 1;
-    const count=2;
+    const count=3;
 
     try {
         const skip=(page-1)*count;
@@ -119,7 +119,7 @@ exports.SellerProducts= async (req,res)=>{
         const pageCount=Math.ceil(productCount/count)
 
 
-        let sellerProductData=await Product.find({sellerId:req.id}).limit(count).skip(skip);
+        let sellerProductData=await Product.find({sellerId:req.id}).populate('brands').limit(count).skip(skip);
 
         res.status(200).json({status:200,message:'All seller product records fetched successfully',Pagination:{
             productCount,pageCount,count,page
