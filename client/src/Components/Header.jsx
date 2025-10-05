@@ -6,17 +6,26 @@ import { NavLink } from 'react-router-dom'
 import { useAuth } from '../Pages/UserContext'
 
 const Header = () => {
-  const [userauth] = useAuth(); 
+  const [userauth,setuserauth] = useAuth(); 
+
+  // Logout
+  const logout=()=>{
+    setuserauth({...userauth,user:null,token:""});
+    localStorage.removeItem('user')
+    localStorage.removeItem('token')
+  }
 
   const renderNavLinks = () => {
     const role = userauth?.user?.role;
 
+    // menu based on roles
     if (role === 'admin') {
       return (
         <Nav>
-          <Nav.Link as={NavLink} to="/sellers">Sellers</Nav.Link>
-          <Nav.Link as={NavLink} to="/products">Products</Nav.Link>
-          <Nav.Link as={NavLink} to="/logout">Logout</Nav.Link>
+          <Nav.Link as={NavLink} to="/admin/create-seller">Create Seller</Nav.Link>
+          <Nav.Link as={NavLink} to="/admin/sellers">Sellers</Nav.Link>
+          <Nav.Link as={NavLink} to="/admin/products">Products</Nav.Link>
+          <Nav.Link as={NavLink}  onClick={logout}>Logout</Nav.Link>
         </Nav>
       );
     }
@@ -24,9 +33,9 @@ const Header = () => {
     if (role === 'seller') {
       return (
         <Nav>
-          <Nav.Link as={NavLink} to="/add-product">Add Product</Nav.Link>
-          <Nav.Link as={NavLink} to="/my-products">My Products</Nav.Link>
-          <Nav.Link as={NavLink} to="/logout">Logout</Nav.Link>
+          <Nav.Link as={NavLink} to="/seller/add-product">Add Product</Nav.Link>
+          <Nav.Link as={NavLink} to="/seller/my-products">My Products</Nav.Link>
+          <Nav.Link as={NavLink} onClick={logout}>Logout</Nav.Link>
         </Nav>
       );
     }

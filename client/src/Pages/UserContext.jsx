@@ -9,7 +9,14 @@ const UserContext = ({ children }) => {
   })
 
   // default authorization
-  axios.defaults.headers.common["Authorization"] = userauth?.token
+  axios.defaults.headers.common["Authorization"] = userauth.token;
+  // useEffect(() => {
+  //   if (userauth.token) {
+  //     axios.defaults.headers.common["Authorization"] = userauth.token;
+  //   } else {
+  //     delete axios.defaults.headers.common["Authorization"];
+  //   }
+  // }, [userauth.token]);
 
   useEffect(() => {
     const userdata = localStorage.getItem("user")
@@ -20,11 +27,9 @@ const UserContext = ({ children }) => {
   }, [])
 
   return (
-    <div>
       <Authcontext.Provider value={[userauth, setuserauth]}>
         {children}
       </Authcontext.Provider>
-    </div>
   )
 }
 
