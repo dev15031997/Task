@@ -49,10 +49,23 @@ exports.createUser= async (req,res)=>{
 
 // Get all the seller Record
 exports.getSeller= async (req,res)=>{
-    try {
-        let sellerData=await User.find({role:'seller'});
+    const page=req.query.page || 1;
+    const count=2;
 
-        res.status(200).json({status:200,message:'Sellers record fetched successfully',sellerData});
+    try {
+        const skip=(page-1)*count;
+
+        // Total Seller Count
+        const sellerCount = await User.countDocuments({ role: 'seller' });
+
+        // Total page Count
+        const pageCount=Math.ceil(sellerCount/count)
+
+        let sellerData=await User.find({role:'seller'}).limit(count).skip(skip);
+
+        res.status(200).json({status:200,message:'Sellers record fetched successfully',Pagination:{
+            sellerCount,pageCount
+        },sellerData});
     }catch (error) {
         res.status(500).json({status:500,message:'Error fetching seller records',error});
     }

@@ -81,10 +81,23 @@ exports.deleteProduct= async (req,res)=>{
 
 // all Products
 exports.allProducts= async (req,res)=>{
-    try {
-        let productData=await Product.find();
+    const page=req.query.page || 1;
+    const count=2;
 
-        res.status(200).json({status:200,message:'All product records fetched successfully',productData});
+    try {
+        const skip=(page-1)*count;
+
+        // Total Product Count
+        const productCount = await Product.countDocuments();
+
+        // Total page Count
+        const pageCount=Math.ceil(productCount/count)
+
+        let productData=await Product.find().limit(count).skip(skip);
+
+        res.status(200).json({status:200,message:'All product records fetched successfully',Pagination:{
+            productCount,pageCount
+        },productData});
     }catch (error) {
         res.status(500).json({status:500,message:'Error fetching product records',error});
     }
@@ -93,10 +106,24 @@ exports.allProducts= async (req,res)=>{
 
 // all Seller Products
 exports.SellerProducts= async (req,res)=>{
-    try {
-        let sellerProductData=await Product.find({sellerId:req.id});
+    const page=req.query.page || 1;
+    const count=2;
 
-        res.status(200).json({status:200,message:'All seller product records record fetched successfully',sellerProductData});
+    try {
+        const skip=(page-1)*count;
+
+        // Total Product Count
+        const productCount = await Product.countDocuments({sellerId:req.id});
+
+        // Total page Count
+        const pageCount=Math.ceil(productCount/count)
+
+
+        let sellerProductData=await Product.find({sellerId:req.id}).limit(count).skip(skip);
+
+        res.status(200).json({status:200,message:'All seller product records fetched successfully',Pagination:{
+            productCount,pageCount
+        },sellerProductData});
     }catch (error) {
         res.status(500).json({status:500,message:'Error fetching product records',error});
     }
