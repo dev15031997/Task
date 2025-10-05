@@ -61,10 +61,10 @@ exports.getSeller= async (req,res)=>{
         // Total page Count
         const pageCount=Math.ceil(sellerCount/count)
 
-        let sellerData=await User.find({role:'seller'}).limit(count).skip(skip);
+        let sellerData=await User.find({role:'seller'}).limit(count).skip(skip).select('-password');
 
         res.status(200).json({status:200,message:'Sellers record fetched successfully',Pagination:{
-            sellerCount,pageCount
+            sellerCount,pageCount,count,page
         },sellerData});
     }catch (error) {
         res.status(500).json({status:500,message:'Error fetching seller records',error});

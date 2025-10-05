@@ -96,7 +96,7 @@ exports.allProducts= async (req,res)=>{
         let productData=await Product.find().limit(count).skip(skip);
 
         res.status(200).json({status:200,message:'All product records fetched successfully',Pagination:{
-            productCount,pageCount
+            productCount,pageCount,count,page
         },productData});
     }catch (error) {
         res.status(500).json({status:500,message:'Error fetching product records',error});
@@ -122,7 +122,7 @@ exports.SellerProducts= async (req,res)=>{
         let sellerProductData=await Product.find({sellerId:req.id}).limit(count).skip(skip);
 
         res.status(200).json({status:200,message:'All seller product records fetched successfully',Pagination:{
-            productCount,pageCount
+            productCount,pageCount,count,page
         },sellerProductData});
     }catch (error) {
         res.status(500).json({status:500,message:'Error fetching product records',error});
