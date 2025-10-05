@@ -6,7 +6,8 @@ const storage = multer.diskStorage({
     cb(null, './uploads')
   },
   filename: function (req, file, cb) {
-    const filename=`image-${Date.now()},${file.filename}` //    const filename = `image-${Date.now()}-${file.originalname}`;
+    // const filename=`image-${Date.now()},${file.filename}` 
+    const filename = `image-${Date.now()}-${file.originalname}`;
     cb(null, filename)
   }
 })
@@ -15,12 +16,15 @@ const storage = multer.diskStorage({
 const fileFilter=(req,file,cb)=>{
     if(file.mimetype ==='image/png' || file.mimetype ==='image/jpg' || file.mimetype === 'image/jpeg')
     {
-        cb(null,true)
+      cb(null,true)
     }
     else{
-        cb(null,false)
-        return cb(new Error('Only jpg,png and jpeg format allowed'))
+      cb(new Error('Only jpg,png and jpeg format allowed'))
     }
 }
 
-const upload = multer({ storage,fileFilter })
+const productUpload=multer({
+storage,fileFilter 
+})
+
+module.exports=productUpload;
