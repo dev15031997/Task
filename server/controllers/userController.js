@@ -50,7 +50,7 @@ exports.createUser= async (req,res)=>{
 // Get all the seller Record
 exports.getSeller= async (req,res)=>{
     const page=req.query.page || 1;
-    const count=2;
+    const count=3;
 
     try {
         const skip=(page-1)*count;

@@ -11,6 +11,7 @@ import Header from './Components/Header';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Home from './Pages/Home';
 import ProtectedRoute from './Routes/ProtectedRoute';
+import './app.css';
 
 const App = () => {
   return (
