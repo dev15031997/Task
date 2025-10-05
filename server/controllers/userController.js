@@ -38,11 +38,11 @@ exports.createUser= async (req,res)=>{
 
             await user.save()
 
-            res.status(201).json({status:201,message:'User created successfully'});
+            res.status(201).json({status:201,message:'Seller created successfully'});
         }
 
     } catch (error) {
-          res.status(500).json({status:500,message:'Error creating user',error});
+          res.status(500).json({status:500,message:'Error creating seller',error});
     }
 };
 
